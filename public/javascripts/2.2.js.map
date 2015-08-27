@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./asyncMessage.js"],"names":[],"mappings":";;;;;;;;;;sBAAe,oBAAoB","file":"2.2.js","sourcesContent":["export default 'I was loaded async'\n\n\n\n/** WEBPACK FOOTER **\n ** ./asyncMessage.js\n **/"],"sourceRoot":""}

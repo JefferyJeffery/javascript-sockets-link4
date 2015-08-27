@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./page2.js"],"names":[],"mappings":";;;;;;;;;;;;;;;;;uCAAuB,CAAc;;;;AAErC,QAAO,CAAC,GAAG,CAAC,6BAAW,iBAAiB,CAAC,CAAC,C","file":"page2.js","sourcesContent":["import exclaimify from './exclaimify'\n\nconsole.log(exclaimify('page2.js loaded'))\n\n\n\n/** WEBPACK FOOTER **\n ** ./page2.js\n **/"],"sourceRoot":""}
