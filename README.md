@@ -7,4 +7,10 @@ An experiment with sockets to create a multiplayer game
 # Build Process
 * Install npm
 * ``npm install``
-* ``npm run development`` <-- Will run local ``gulp``
+
+# Start Development Server
+* ``npm start``
+
+# Start Development Server with BrowserSync
+* ``npm run development``
+

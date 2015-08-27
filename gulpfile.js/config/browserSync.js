@@ -1,8 +1,7 @@
 var config = require('./')
 
 module.exports = {
-  server: {
-    baseDir: config.publicDirectory
-  },
-  files: ['public/**/*.html']
+  files: ['public/**/*.html'],
+  proxy: "http://localhost:3000",
+  port: 7000
 }
