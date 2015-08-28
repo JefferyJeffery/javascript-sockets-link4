@@ -4,9 +4,24 @@
 
 {% block content %}
   <script src="/socket.io/socket.io.js"></script>
-  <h1>link 4</h1>
+  <div id="board" class="board">
+    <div class="current_player">NOT SET</div>
+      {% for col in [0,1,2,3,4,5,6] %}
+        <div class="board_column">
+          <div class="droppers">
+            <button class="dropper" data-column="{{ col }}">V</button>
+          </div>
+          {% for row in [5,4,3,2,1,0] %}
+            <div class="cell" data-row="{{ row }}" data-column="{{ col }}">
+              <span class="cell_value">X</span>
+            </div>
+          {% endfor %}
+        </div>      
+      {% endfor %}
+    <div class="debug"></div>
+  </div>
 {% endblock %}
 
 {% block javascript %}
-<script src="javascripts/app.js"></script>
+  <script src="javascripts/app.js"></script>
 {% endblock %}

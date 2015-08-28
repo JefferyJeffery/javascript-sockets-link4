@@ -1,9 +1,9 @@
 export default class Link4Game {
  
   constructor() {
-    this.columns = [];
+    this._columns = [];
     for (var i =0; i < this.COLUMN_COUNT; i++) {
-        this.columns.push([]);
+        this._columns.push([]);
     }
     this._randomizeTurn();
   }
@@ -19,6 +19,23 @@ export default class Link4Game {
     }
   }
 
+  currentTurn(){
+    return this._turn;
+  }
+
+  serialize(){
+    var source = {
+      turn : this.currentTurn(),
+      columns : this._columns
+    }
+    return JSON.stringify(source);
+  }
+
+  getColumn(column_index){
+    return this._column(column_index).slice(0);
+  }
+
+
   _randomizeTurn(){
     this._turn = (Math.random() > 0.5) ? this.BLACK : this.RED;
   }
@@ -28,7 +45,7 @@ export default class Link4Game {
   }
 
   _column(column_index){
-    return this.columns[column_index];
+    return this._columns[column_index];
   }
 
   debug(){
