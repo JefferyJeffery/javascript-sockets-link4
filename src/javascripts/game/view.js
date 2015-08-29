@@ -47,9 +47,7 @@ export default class Link4View {
     var dropCallback =  this._dropCallback.bind(this, callbacks.drop);
     var grid = this.boardDiv().querySelector('.grid');
     grid.addEventListener('click', dropCallback);
-
     var reset = this.boardDiv().querySelector('.reset');
-    debugger;
     reset.addEventListener('click', function(e){ callbacks.reset(); });
   }
 
@@ -57,7 +55,7 @@ export default class Link4View {
      if (state === '_') { return '&nbsp;' }
      return state;
   }
-  
+
   _addClass( classname, element ) {
     var cn = element.className;
     //test for existance

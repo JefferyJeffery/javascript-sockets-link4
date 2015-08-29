@@ -27,25 +27,25 @@ export default class Link4Game {
     }
   }
 
-  result(){
+  status(){
     var winner = this.winner();
     if(winner === this.RED){
       return this.RED;
     } else if(winner === this.BLACK){
       return this.BLACK;
-    }else if(isTie()){
+    }else if(this.isTie()){
       return this.STATUS_TIE;
     }
     return this.STATUS_ACTIVE;
   }
 
   isActive(){
-    return this.result() != this.STATUS_ACTIVE;
+    return this.status() != this.STATUS_ACTIVE;
   }
 
   isTie(){
     for (var i =0; i < this.COLUMN_COUNT; i++) {
-        if(this._columns.length < this.ROW_COUNT)
+        if(this._columns[i].length < this.ROW_COUNT)
         {
           return false;
         }
@@ -54,7 +54,10 @@ export default class Link4Game {
   }
 
   winner(){
-    return null;
+    return this._verticalWinner() || 
+           this._horizontalWinner() || 
+           this._slashWinner() || 
+           this._backslashWinner();
   }
 
   currentTurn(){
@@ -75,7 +78,8 @@ export default class Link4Game {
       turn : this.currentTurn(),
       columns : this._columns,
       start_turn : this._start_turn,
-      history : this._history
+      history : this._history,
+      status : this.status()
     }
     return JSON.stringify(source);
   }
@@ -87,6 +91,50 @@ export default class Link4Game {
   debug(){
     console.log(`Next -> ${this.currentTurn()}`);
     console.log(this._columns);
+  }
+
+  _verticalWinner(){
+    for (var i =0; i < this.COLUMN_COUNT; i++) {
+      var winner = this._findSequence(this._columns[i], this.LINK_REQUIRED);
+      console.log(winner, this._columns[i]);
+      if(winner){
+        return winner;
+      }
+    }
+    return null;
+  }
+  _horizontalWinner(){
+    return null;
+  }
+  _slashWinner(){
+    return null;
+  }
+  _backslashWinner(){
+    return null;
+  }
+
+  _findSequence(array, minLen){
+    if(array.length < minLen){
+      return false;
+    }
+    var cursor = '';
+    var count = 0;
+    for(var i=0; i < array.length; i++){
+      var remaining = array.length - i
+      if(cursor !== array[i]){
+        count = 1;
+        cursor = array[i];
+      } else {
+        count++;
+      }
+      // 4 - count > remaining
+      if(count >= minLen){
+        return cursor;
+      } else if(minLen - count > remaining ) {
+        return false 
+      }
+    }
+    return false;
   }
 
   _randomizeTurn(){
@@ -121,4 +169,5 @@ Link4Game.prototype.BLACK = 'B';
 Link4Game.prototype.EMPTY = '_';
 Link4Game.prototype.STATUS_TIE = 'T';
 Link4Game.prototype.STATUS_ACTIVE = 'A';
+Link4Game.prototype.LINK_REQUIRED = 4;
 
