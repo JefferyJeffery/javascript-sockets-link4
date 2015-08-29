@@ -1,6 +1,10 @@
 export default class Link4Game {
  
   constructor() {
+    this.reset();
+  }
+
+  reset(){
     this._id = this._generateUUID();
     this._columns = [];
     this._history = [];
@@ -21,6 +25,36 @@ export default class Link4Game {
     } else {
       return false;
     }
+  }
+
+  result(){
+    var winner = this.winner();
+    if(winner === this.RED){
+      return this.RED;
+    } else if(winner === this.BLACK){
+      return this.BLACK;
+    }else if(isTie()){
+      return this.STATUS_TIE;
+    }
+    return this.STATUS_ACTIVE;
+  }
+
+  isActive(){
+    return this.result() != this.STATUS_ACTIVE;
+  }
+
+  isTie(){
+    for (var i =0; i < this.COLUMN_COUNT; i++) {
+        if(this._columns.length < this.ROW_COUNT)
+        {
+          return false;
+        }
+    }
+    return true;
+  }
+
+  winner(){
+    return null;
   }
 
   currentTurn(){
@@ -52,7 +86,7 @@ export default class Link4Game {
 
   debug(){
     console.log(`Next -> ${this.currentTurn()}`);
-    console.log(this.columns);
+    console.log(this._columns);
   }
 
   _randomizeTurn(){
@@ -85,4 +119,6 @@ Link4Game.prototype.ROW_COUNT = 6;
 Link4Game.prototype.RED = 'R';
 Link4Game.prototype.BLACK = 'B';
 Link4Game.prototype.EMPTY = '_';
+Link4Game.prototype.STATUS_TIE = 'T';
+Link4Game.prototype.STATUS_ACTIVE = 'A';
 

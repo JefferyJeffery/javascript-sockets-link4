@@ -16,10 +16,12 @@
   <script src="/socket.io/socket.io.js"></script>
   <div id="board" class="board">
     <div class="current_player"></div>
-      <div class="grid">
-        <div class="spacer"></div>
+    <div class="reset_container"><button class="reset">Reset</button></div>
+      <table class="grid">
+      <tr>
+        <td class="spacer"></td>
         
-          <div class="board_column" data-column="0">
+          <td class="board_column" data-column="0">
             <div class="droppers">
               <button class="dropper">V</button>
             </div>
@@ -48,9 +50,9 @@
                 <span class="cell_value">X</span>
               </div>
             
-          </div>      
+          </td>      
         
-          <div class="board_column" data-column="1">
+          <td class="board_column" data-column="1">
             <div class="droppers">
               <button class="dropper">V</button>
             </div>
@@ -79,9 +81,9 @@
                 <span class="cell_value">X</span>
               </div>
             
-          </div>      
+          </td>      
         
-          <div class="board_column" data-column="2">
+          <td class="board_column" data-column="2">
             <div class="droppers">
               <button class="dropper">V</button>
             </div>
@@ -110,9 +112,9 @@
                 <span class="cell_value">X</span>
               </div>
             
-          </div>      
+          </td>      
         
-          <div class="board_column" data-column="3">
+          <td class="board_column" data-column="3">
             <div class="droppers">
               <button class="dropper">V</button>
             </div>
@@ -141,9 +143,9 @@
                 <span class="cell_value">X</span>
               </div>
             
-          </div>      
+          </td>      
         
-          <div class="board_column" data-column="4">
+          <td class="board_column" data-column="4">
             <div class="droppers">
               <button class="dropper">V</button>
             </div>
@@ -172,9 +174,9 @@
                 <span class="cell_value">X</span>
               </div>
             
-          </div>      
+          </td>      
         
-          <div class="board_column" data-column="5">
+          <td class="board_column" data-column="5">
             <div class="droppers">
               <button class="dropper">V</button>
             </div>
@@ -203,9 +205,9 @@
                 <span class="cell_value">X</span>
               </div>
             
-          </div>      
+          </td>      
         
-          <div class="board_column" data-column="6">
+          <td class="board_column" data-column="6">
             <div class="droppers">
               <button class="dropper">V</button>
             </div>
@@ -234,10 +236,10 @@
                 <span class="cell_value">X</span>
               </div>
             
-          </div>      
+          </td>      
         
-      <div class="spacer"></div>
-    </div>
+      <td class="spacer"></td>
+    </table>
     <div class="debug"></div>
   </div>
 

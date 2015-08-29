@@ -17,12 +17,24 @@ export default class Link4View {
     for(var col = 0; col < model.COLUMN_COUNT; col ++){
       var column = board.querySelector('.board_column[data-column="' + col + '"]');
       for(var row = 0; row < model.ROW_COUNT; row ++){
-         var state = model.at(col,row); 
-         var cell = column.querySelector('.cell[data-row="' + row + '"]');
-         if(state != '_'){
-           this._addClass(this._stateToCellClass(state), cell);
-         }
-         cell.innerHTML = this._stateToCellContents(state);
+        var state = model.at(col,row); 
+        var cell = column.querySelector('.cell[data-row="' + row + '"]');
+
+        switch(state) {
+          case model.RED:
+            this._addClass('player_R', cell);
+            this._removeClass('player_B', cell);
+            break;
+          case model.BLACK:
+            this._addClass('player_B', cell);
+            this._removeClass('player_R', cell);
+            break;
+          default:
+            this._removeClass('player_R', cell);
+            this._removeClass('player_B', cell);
+        }
+
+        cell.innerHTML = this._stateToCellContents(state);
       }
     }
   }
@@ -35,16 +47,17 @@ export default class Link4View {
     var dropCallback =  this._dropCallback.bind(this, callbacks.drop);
     var grid = this.boardDiv().querySelector('.grid');
     grid.addEventListener('click', dropCallback);
+
+    var reset = this.boardDiv().querySelector('.reset');
+    debugger;
+    reset.addEventListener('click', function(e){ callbacks.reset(); });
   }
 
   _stateToCellContents(state){
      if (state === '_') { return '&nbsp;' }
      return state;
   }
-  _stateToCellClass(state){
-     return 'player_' + state;
-  }
-
+  
   _addClass( classname, element ) {
     var cn = element.className;
     //test for existance
