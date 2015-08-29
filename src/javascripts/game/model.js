@@ -96,7 +96,6 @@ export default class Link4Game {
   _verticalWinner(){
     for (var i =0; i < this.COLUMN_COUNT; i++) {
       var winner = this._findSequence(this._columns[i], this.LINK_REQUIRED);
-      console.log(winner, this._columns[i]);
       if(winner){
         return winner;
       }
@@ -104,6 +103,17 @@ export default class Link4Game {
     return null;
   }
   _horizontalWinner(){
+    for (var i =0; i < this.ROW_COUNT; i++) {
+      var row = [];
+      for (var col =0; col < this.COLUMN_COUNT; col++) {
+        row.push(this.at(col,i));
+      }
+      console.log(row);
+      var winner = this._findSequence(row, this.LINK_REQUIRED);
+      if(winner){
+        return winner;
+      }
+    }
     return null;
   }
   _slashWinner(){
@@ -120,14 +130,16 @@ export default class Link4Game {
     var cursor = '';
     var count = 0;
     for(var i=0; i < array.length; i++){
-      var remaining = array.length - i
-      if(cursor !== array[i]){
+      var remaining = array.length - i;
+      if(array[i] == this.EMPTY){
+        count = 0;
+        cursor = array[i];
+      }else if(cursor !== array[i]){
         count = 1;
         cursor = array[i];
       } else {
         count++;
       }
-      // 4 - count > remaining
       if(count >= minLen){
         return cursor;
       } else if(minLen - count > remaining ) {
