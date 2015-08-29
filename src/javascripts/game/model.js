@@ -1,23 +1,27 @@
 export default class Link4Game {
  
-  constructor() {
-    this.reset();
+  constructor(force_first) {
+    this.reset(force_first);
   }
 
-  reset(){
+  reset(force_first){
     this._id = this._generateUUID();
     this._columns = [];
     this._history = [];
     for (var i =0; i < this.COLUMN_COUNT; i++) {
         this._columns.push([]);
     }
-    this._randomizeTurn();
+    if(force_first == this.RED || force_first == this.BLACK){
+      this._turn = force_first;
+    } else {
+      this._randomizeTurn();
+    }
     this._start_turn = this.currentTurn();
   }
 
   drop(column_index){
     var column = this._column(column_index);
-    if(column.length < this.ROW_COUNT){
+    if(column.length < this.ROW_COUNT && this.status() == this.STATUS_ACTIVE){
       column.push(this._turn);
       this._history.push(column_index);
       this._toggleTurn();
@@ -110,7 +114,6 @@ export default class Link4Game {
       for (var col =0; col < this.COLUMN_COUNT; col++) {
         row.push(this.at(col,i));
       }
-      console.log(row);
       var winner = this._findSequence(row, this.LINK_REQUIRED);
       if(winner){
         return winner;
@@ -148,16 +151,18 @@ export default class Link4Game {
     var m = this.ROW_COUNT;
     var n = this.COLUMN_COUNT;
 
-    var out = new Array();
+    var out = [];
     for (var i = 1 - m; i < n; i++) {
-      var group = new Array();
+
+      var group = [];
+
       for (var j = 0; j < m; j++) {
-        var row = i + j;
-        console.log('d1',i, j, row);
-        if (row >= 0 && row < n) {
-          group.push(this.at(j,row));
+        var col = (i + j);
+        if (col >= 0 && col < n) {
+          group.push( this.at(col, j) );
         }
       }
+
       //if(group.length >= this.LINK_REQUIRED){
         out.push(group);
       //}
@@ -169,16 +174,18 @@ export default class Link4Game {
     var m = this.ROW_COUNT;
     var n = this.COLUMN_COUNT;
 
-    var out = new Array();
-    for (var i = 0 - m; i < n; i++) {
-      var group = new Array();
-      for (var j = m; j >= 0; j--) {
-        var row = i + j;
-        console.log('d2',i, j, row);
-        if (row >= 0 && row < n) {
-          group.push(this.at(j,row));
+    var out = [];
+    for (var i = n + m - 2; i >= 0; i--) {
+
+      var group = [];
+
+      for (var j = 0; j < m; j++) {
+        var col = (i - j);
+        if (col >= 0 && col < n) {
+          group.push( this.at(col, j) );
         }
       }
+
       //if(group.length >= this.LINK_REQUIRED){
         out.push(group);
       //}
