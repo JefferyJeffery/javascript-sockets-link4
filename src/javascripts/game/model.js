@@ -79,7 +79,9 @@ export default class Link4Game {
       columns : this._columns,
       start_turn : this._start_turn,
       history : this._history,
-      status : this.status()
+      status : this.status(),
+      diagonals1 : this._diagonals1(),
+      diagonals2 : this._diagonals2()
     }
     return JSON.stringify(source);
   }
@@ -116,11 +118,72 @@ export default class Link4Game {
     }
     return null;
   }
+  // \ down to the right
   _slashWinner(){
+    var slanted_grid = this._diagonals2();
+    for(var i = 0; i < slanted_grid.length; i++){
+      var winner = this._findSequence(slanted_grid[i], this.LINK_REQUIRED);
+      if(winner){
+        return winner;
+      }
+    }
+
     return null;
   }
+
+  // / up to the right
   _backslashWinner(){
+    var slanted_grid = this._diagonals1();
+    for(var i = 0; i < slanted_grid.length; i++){
+      var winner = this._findSequence(slanted_grid[i], this.LINK_REQUIRED);
+      if(winner){
+        return winner;
+      }
+    }
+
     return null;
+  }
+
+  _diagonals1(){
+    var m = this.ROW_COUNT;
+    var n = this.COLUMN_COUNT;
+
+    var out = new Array();
+    for (var i = 1 - m; i < n; i++) {
+      var group = new Array();
+      for (var j = 0; j < m; j++) {
+        var row = i + j;
+        console.log('d1',i, j, row);
+        if (row >= 0 && row < n) {
+          group.push(this.at(j,row));
+        }
+      }
+      //if(group.length >= this.LINK_REQUIRED){
+        out.push(group);
+      //}
+    }
+    return out;
+  }
+
+  _diagonals2(){
+    var m = this.ROW_COUNT;
+    var n = this.COLUMN_COUNT;
+
+    var out = new Array();
+    for (var i = 0 - m; i < n; i++) {
+      var group = new Array();
+      for (var j = m; j >= 0; j--) {
+        var row = i + j;
+        console.log('d2',i, j, row);
+        if (row >= 0 && row < n) {
+          group.push(this.at(j,row));
+        }
+      }
+      //if(group.length >= this.LINK_REQUIRED){
+        out.push(group);
+      //}
+    }
+    return out;
   }
 
   _findSequence(array, minLen){
