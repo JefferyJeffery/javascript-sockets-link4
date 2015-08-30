@@ -17,12 +17,12 @@ export default class Link4View {
     if(status == model.STATUS_ACTIVE){
       current_player_div.innerHTML = `Next: ${this._currentPlayerName(model.currentTurn())}`;
     } else if(model.winner()) {
-      current_player_div.innerHTML = 'Winner is ' + this._currentPlayerName(model.winner());
+      current_player_div.innerHTML = '' + this._currentPlayerName(model.winner()) + ' wins!';
     } else {
       current_player_div.innerHTML = 'Tie';
     }
 
-    this._forEachDropper( (dropper) => {
+    this._forEachElement('.dropper', (dropper) => {
       this._dropperView(dropper, model);
     } );
 
@@ -55,8 +55,12 @@ export default class Link4View {
   bind(callbacks){
     var dropCallback =  this._dropCallback.bind(this, callbacks.drop);
 
-    this._forEachDropper( (dropper) => {
+    this._forEachElement('.dropper', (dropper) => {
       dropper.addEventListener('click', dropCallback);
+    } );
+
+    this._forEachElement('.cell', (cell) => {
+      cell.addEventListener('click', dropCallback);
     } );
 
     var reset = this.boardDiv().querySelector('.reset');
@@ -92,10 +96,10 @@ export default class Link4View {
     return '-';
   }
 
-  _forEachDropper(cb){
-    var droppers = this.boardDiv().querySelectorAll('.dropper');
-    for(var i = 0; i < droppers.length ; i++){
-      cb.apply(this,[droppers[i]]);
+  _forEachElement(selector, cb){
+    var elements = this.boardDiv().querySelectorAll(selector);
+    for(var i = 0; i < elements.length ; i++){
+      cb.apply(this,[elements[i]]);
     }
   }
 

@@ -431,12 +431,12 @@ webpackJsonp([0,1],[
 	      if (status == model.STATUS_ACTIVE) {
 	        current_player_div.innerHTML = 'Next: ' + this._currentPlayerName(model.currentTurn());
 	      } else if (model.winner()) {
-	        current_player_div.innerHTML = 'Winner is ' + this._currentPlayerName(model.winner());
+	        current_player_div.innerHTML = '' + this._currentPlayerName(model.winner()) + ' wins!';
 	      } else {
 	        current_player_div.innerHTML = 'Tie';
 	      }
 	
-	      this._forEachDropper(function (dropper) {
+	      this._forEachElement('.dropper', function (dropper) {
 	        _this._dropperView(dropper, model);
 	      });
 	
@@ -471,8 +471,12 @@ webpackJsonp([0,1],[
 	    value: function bind(callbacks) {
 	      var dropCallback = this._dropCallback.bind(this, callbacks.drop);
 	
-	      this._forEachDropper(function (dropper) {
+	      this._forEachElement('.dropper', function (dropper) {
 	        dropper.addEventListener('click', dropCallback);
+	      });
+	
+	      this._forEachElement('.cell', function (cell) {
+	        cell.addEventListener('click', dropCallback);
 	      });
 	
 	      var reset = this.boardDiv().querySelector('.reset');
@@ -511,11 +515,11 @@ webpackJsonp([0,1],[
 	      return '-';
 	    }
 	  }, {
-	    key: '_forEachDropper',
-	    value: function _forEachDropper(cb) {
-	      var droppers = this.boardDiv().querySelectorAll('.dropper');
-	      for (var i = 0; i < droppers.length; i++) {
-	        cb.apply(this, [droppers[i]]);
+	    key: '_forEachElement',
+	    value: function _forEachElement(selector, cb) {
+	      var elements = this.boardDiv().querySelectorAll(selector);
+	      for (var i = 0; i < elements.length; i++) {
+	        cb.apply(this, [elements[i]]);
 	      }
 	    }
 	  }, {
