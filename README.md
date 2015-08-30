@@ -6,11 +6,15 @@ An experiment with sockets to create a multiplayer game
 
 # Build Process
 * Install npm
-* ``npm install``
+* ``$ npm install``
 
 # Start Development Server
-* ``npm start``
+* ``$ npm start``
 
 # Start Development Server with BrowserSync
-* ``npm run development``
+* ``$ npm run development``
 
+# TDD With Karma
+* ``$ karma start`` - Watches and reruns tests
+* Works better than the gulp task which has some kind of bug with ``iconFont``
+* Allows you stay in the editor and have all your tests run in the background
