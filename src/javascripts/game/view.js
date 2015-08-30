@@ -10,9 +10,15 @@ export default class Link4View {
 
     var board = this.boardDiv();
 
-    var current_player = board.querySelector('.current_player');
+    var current_player_div = board.querySelector('.current_player');
 
-    current_player.innerHTML = model.currentTurn();
+    var status = model.status();
+
+    if(status == model.STATUS_ACTIVE){
+      current_player_div.innerHTML = model.currentTurn();
+    } else {
+      current_player_div.innerHTML = 'Winner is ' + status;
+    }
 
     for(var col = 0; col < model.COLUMN_COUNT; col ++){
       var column = board.querySelector('.board_column[data-column="' + col + '"]');
@@ -77,6 +83,7 @@ export default class Link4View {
   }
 
   _dropCallback(cb, e){
+    e.stopPropagation();
     var container = this._findAncestor(e.target,'board_column');
     if(container){
       var column_index = parseInt(container.dataset.column);

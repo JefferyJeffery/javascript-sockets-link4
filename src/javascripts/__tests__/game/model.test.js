@@ -28,6 +28,25 @@ describe('game/model.js', () => {
         game.isTie().should.equal(false);
     });
 
+    describe('getStartingPlayer', () =>{
+      it('should be the starting player', () => {
+        expect(game.getStartingPlayer()).to.eql('R');
+      });
+    });
+
+    describe('getHistory', () =>{
+      it('should include all moves', () => {
+        winnerHorizontal();
+        expect(game.getHistory()).to.eql([1,1,2,2,3,3,4]);
+      });
+
+      it('should not include blocked moves', () => {
+        winnerHorizontal();
+        game.drop(1);
+        expect(game.getHistory()).to.eql([1,1,2,2,3,3,4]);
+      });
+    });
+
     describe('drop', () => {
       it('should add a token to column 6', ()=>{
         var column6 = game.getColumn(6);

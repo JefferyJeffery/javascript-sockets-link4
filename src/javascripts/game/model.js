@@ -79,19 +79,23 @@ export default class Link4Game {
   serialize(){
     var source = {
       id : this._id,
-      turn : this.currentTurn(),
-      columns : this._columns,
       start_turn : this._start_turn,
       history : this._history,
       status : this.status(),
-      diagonals1 : this._diagonals1(),
-      diagonals2 : this._diagonals2()
     }
     return JSON.stringify(source);
   }
 
+  getStartingPlayer(){
+    return this._start_turn;
+  }
+
   getColumn(column_index){
     return this._column(column_index).slice(0);
+  }
+
+  getHistory(){
+    return this._history.slice(0);
   }
 
   debug(){
