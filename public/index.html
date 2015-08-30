@@ -14,14 +14,241 @@
 </nav>
   
   <script src="/socket.io/socket.io.js"></script>
-  <h1>link 4</h1>
+  <div id="board" class="board">
+    <div class="current_player"></div>
+    <div class="reset_container"><button class="reset">Reset</button></div>
+      <table class="grid">
+      <tr>
+        <td class="spacer"></td>
+        
+          <td class="board_column" data-column="0">
+            <div class="droppers">
+              <button class="dropper">V</button>
+            </div>
+            
+              <div class="cell" data-row="5">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="4">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="3">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="2">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="1">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="0">
+                <span class="cell_value">X</span>
+              </div>
+            
+          </td>      
+        
+          <td class="board_column" data-column="1">
+            <div class="droppers">
+              <button class="dropper">V</button>
+            </div>
+            
+              <div class="cell" data-row="5">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="4">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="3">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="2">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="1">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="0">
+                <span class="cell_value">X</span>
+              </div>
+            
+          </td>      
+        
+          <td class="board_column" data-column="2">
+            <div class="droppers">
+              <button class="dropper">V</button>
+            </div>
+            
+              <div class="cell" data-row="5">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="4">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="3">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="2">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="1">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="0">
+                <span class="cell_value">X</span>
+              </div>
+            
+          </td>      
+        
+          <td class="board_column" data-column="3">
+            <div class="droppers">
+              <button class="dropper">V</button>
+            </div>
+            
+              <div class="cell" data-row="5">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="4">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="3">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="2">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="1">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="0">
+                <span class="cell_value">X</span>
+              </div>
+            
+          </td>      
+        
+          <td class="board_column" data-column="4">
+            <div class="droppers">
+              <button class="dropper">V</button>
+            </div>
+            
+              <div class="cell" data-row="5">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="4">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="3">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="2">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="1">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="0">
+                <span class="cell_value">X</span>
+              </div>
+            
+          </td>      
+        
+          <td class="board_column" data-column="5">
+            <div class="droppers">
+              <button class="dropper">V</button>
+            </div>
+            
+              <div class="cell" data-row="5">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="4">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="3">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="2">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="1">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="0">
+                <span class="cell_value">X</span>
+              </div>
+            
+          </td>      
+        
+          <td class="board_column" data-column="6">
+            <div class="droppers">
+              <button class="dropper">V</button>
+            </div>
+            
+              <div class="cell" data-row="5">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="4">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="3">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="2">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="1">
+                <span class="cell_value">X</span>
+              </div>
+            
+              <div class="cell" data-row="0">
+                <span class="cell_value">X</span>
+              </div>
+            
+          </td>      
+        
+      <td class="spacer"></td>
+    </table>
+    <div class="debug"></div>
+  </div>
 
   <footer>
     <p>Link 4</p>
   </footer>
   <script src="javascripts/shared.js"></script>
   
-<script src="javascripts/app.js"></script>
+  <script src="javascripts/app.js"></script>
 
 </body>
 </html>

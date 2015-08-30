@@ -2,7 +2,7 @@ var config = require('./')
 var karmaWebpack = require('karma-webpack')
 var webpackConfig = require('./webpack')('test')
 
-var files = config.sourceDirectory + '/javascripts/**/__tests__/*'
+var files = config.sourceDirectory + '/javascripts/**/__tests__/**'
 
 var karmaConfig = {
   frameworks: ['mocha', 'sinon-chai'],
@@ -10,7 +10,7 @@ var karmaConfig = {
   preprocessors: {},
   webpack: webpackConfig,
   singleRun: process.env.TRAVIS_CI === 'true',
-  reporters: ['nyan'],
+  reporters: ['spec'],
   browsers: [(process.env.TRAVIS_CI === 'true'? 'Firefox' : 'Chrome')]
 }
 

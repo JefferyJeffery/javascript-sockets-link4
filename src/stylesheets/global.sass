@@ -2,6 +2,15 @@
 @import base/colors
 @import base/mixins
 @import base/typography
+@import base/game
+
+.group:after
+  content: ""
+  display: table
+  clear: both
+
+.debug
+  border: 1px solid red
 
 .highlight
   background-color: $vigetBlue
