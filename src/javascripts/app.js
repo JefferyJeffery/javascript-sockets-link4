@@ -8,7 +8,7 @@ import Link4View from './game/view'
   var port = window.location.port ? ':3000' : '';
   var socket_host  = hostname + port;
 
-  var socket = io(socket_host);
+  var socket = io ? io(socket_host) : null;
   var app = new Link4Controller(
     socket, 
     new Link4Game(),

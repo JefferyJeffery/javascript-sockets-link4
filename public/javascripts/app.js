@@ -31,7 +31,7 @@ webpackJsonp([0,1],[
 	  var port = window.location.port ? ':3000' : '';
 	  var socket_host = hostname + port;
 	
-	  var socket = io(socket_host);
+	  var socket = io ? io(socket_host) : null;
 	  var app = new _gameController2['default'](socket, new _gameModel2['default'](), new _gameView2['default'](document, 'board'));
 	
 	  console.log('Looking for sockets at ' + socket_host);
