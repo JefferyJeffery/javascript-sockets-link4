@@ -1,29 +1,100 @@
 .board
-  width: 80%
+  width: 60%
   border: 2px solid #333
   margin: 10px auto
+  padding: 10px
 
 .grid
   width: 100%  
   border-collapse: collapse
+  background-color: #FFCC00
+  border: 6px solid #FFCC00
 
 .board_column
   width: 10%
-  border: 2px solid #333
-  border-top: none
-  border-bottom: none
+  text-align: center
 
+.cell_holder
+  padding: 3px
+
+.cell
+  width: 100%
+  border-radius: 50%
+  background-color: #FFF
+
+.cell:before
+  content: ""
+  display: block
+  padding-top: 100%
+  
 .spacer
   width: 15%
 
+
 .player_R
-  background-color: #FDD
+  background-color: #F55
 
 .player_B
-  background-color: #DDF
+  background-color: #555
+
+.btn
+  position: relative
+  vertical-align: top
+  width: 80%
+  height: 2em
+  padding: 0
+  color: #333
+  font-size: 1em
+  text-align: center
+  border: 0
+  cursor: pointer
+  border-radius: 5px
+  margin: 5px auto
+  background-color: #FFCC00
+  transition: all 0.3s ease 0s;
+
+.btn:active
+  outline: none
+  -webkit-box-shadow: none
+  box-shadow: none
+
+.next_R
+  background-color: #F55
+
+.next_B
+  background-color: #555
+
+.next_R:hover
+  background-color: #F99
+
+.next_B:hover
+  background-color: #999
 
 .debug
   font-family: courier
   font-size: .7em
   padding: 1em
   margin: 1em
+
+.status_container
+  width: 100%  
+  border-collapse: collapse
+  background-color: #EEEEEE
+
+.status_field
+  padding: 6px
+  font-size: 1em
+
+.current_player 
+  text-align: left
+  font-weight: bold
+
+.reset_container
+  text-align: right
+  padding: 6px
+
+.reset
+  background-color: #BBBBBB
+
+.reset:hover
+  background-color: #DDDDFF  
