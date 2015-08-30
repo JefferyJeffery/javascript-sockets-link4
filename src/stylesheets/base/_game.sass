@@ -30,7 +30,6 @@
 .spacer
   width: 15%
 
-
 .player_R
   background-color: #F55
 
@@ -98,3 +97,14 @@
 
 .reset:hover
   background-color: #DDDDFF  
+
+$media-queries: "(min-device-width: 320px) and (max-device-width: 736px)"
+@media only screen and #{$media-queries} 
+  .spacer 
+     width: 2% 
+  .board
+    width: 100% 
+    border: none
+    margin: 0
+    padding: 0
+
