@@ -418,6 +418,8 @@ webpackJsonp([0,1],[
 	  _createClass(Link4View, [{
 	    key: 'render',
 	    value: function render(model) {
+	      var _this = this;
+	
 	      this._debugDiv().innerHTML = model.serialize();
 	
 	      var board = this.boardDiv();
@@ -427,17 +429,22 @@ webpackJsonp([0,1],[
 	      var status = model.status();
 	
 	      if (status == model.STATUS_ACTIVE) {
-	        current_player_div.innerHTML = model.currentTurn();
+	        current_player_div.innerHTML = 'Next: ' + this._currentPlayerName(model.currentTurn());
+	      } else if (model.winner()) {
+	        current_player_div.innerHTML = 'Winner is ' + this._currentPlayerName(model.winner());
 	      } else {
-	        current_player_div.innerHTML = 'Winner is ' + status;
+	        current_player_div.innerHTML = 'Tie';
 	      }
 	
-	      for (var col = 0; col < model.COLUMN_COUNT; col++) {
-	        var column = board.querySelector('.board_column[data-column="' + col + '"]');
-	        for (var row = 0; row < model.ROW_COUNT; row++) {
-	          var state = model.at(col, row);
-	          var cell = column.querySelector('.cell[data-row="' + row + '"]');
+	      this._forEachDropper(function (dropper) {
+	        _this._dropperView(dropper, model);
+	      });
 	
+	      for (var row = 0; row < model.ROW_COUNT; row++) {
+	        for (var col = 0; col < model.COLUMN_COUNT; col++) {
+	          var board_row = board.querySelector('.board_row[data-row="' + row + '"]');
+	          var state = model.at(col, row);
+	          var cell = board_row.querySelector('.cell[data-column="' + col + '"]');
 	          switch (state) {
 	            case model.RED:
 	              this._addClass('player_R', cell);
@@ -451,8 +458,6 @@ webpackJsonp([0,1],[
 	              this._removeClass('player_R', cell);
 	              this._removeClass('player_B', cell);
 	          }
-	
-	          cell.innerHTML = this._stateToCellContents(state);
 	        }
 	      }
 	    }
@@ -465,12 +470,53 @@ webpackJsonp([0,1],[
 	    key: 'bind',
 	    value: function bind(callbacks) {
 	      var dropCallback = this._dropCallback.bind(this, callbacks.drop);
-	      var grid = this.boardDiv().querySelector('.grid');
-	      grid.addEventListener('click', dropCallback);
+	
+	      this._forEachDropper(function (dropper) {
+	        dropper.addEventListener('click', dropCallback);
+	      });
+	
 	      var reset = this.boardDiv().querySelector('.reset');
 	      reset.addEventListener('click', function (e) {
 	        callbacks.reset();
 	      });
+	    }
+	  }, {
+	    key: '_dropperView',
+	    value: function _dropperView(dropper, model) {
+	      this._removeClass('next_R', dropper);
+	      this._removeClass('next_B', dropper);
+	      if (model.status() != model.STATUS_ACTIVE) {
+	        dropper.disabled = true;
+	      } else {
+	        dropper.disabled = false;
+	        switch (model.currentTurn()) {
+	          case model.RED:
+	            this._addClass('next_R', dropper);
+	            break;
+	          case model.BLACK:
+	            this._addClass('next_B', dropper);
+	            break;
+	        }
+	      }
+	    }
+	  }, {
+	    key: '_currentPlayerName',
+	    value: function _currentPlayerName(status) {
+	      switch (status) {
+	        case 'R':
+	          return 'Stu';
+	        case 'B':
+	          return 'Dana';
+	      }
+	      return '-';
+	    }
+	  }, {
+	    key: '_forEachDropper',
+	    value: function _forEachDropper(cb) {
+	      var droppers = this.boardDiv().querySelectorAll('.dropper');
+	      for (var i = 0; i < droppers.length; i++) {
+	        cb.apply(this, [droppers[i]]);
+	      }
 	    }
 	  }, {
 	    key: '_stateToCellContents',
@@ -505,13 +551,11 @@ webpackJsonp([0,1],[
 	  }, {
 	    key: '_dropCallback',
 	    value: function _dropCallback(cb, e) {
+	      e.preventDefault();
 	      e.stopPropagation();
-	      var container = this._findAncestor(e.target, 'board_column');
-	      if (container) {
-	        var column_index = parseInt(container.dataset.column);
-	        if (!isNaN(column_index)) {
-	          cb(column_index);
-	        }
+	      var column_index = parseInt(e.target.dataset.column);
+	      if (!isNaN(column_index)) {
+	        cb(column_index);
 	      }
 	    }
 	  }, {
