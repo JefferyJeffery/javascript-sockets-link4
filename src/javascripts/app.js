@@ -1,7 +1,9 @@
 // Link4 App JavaScript
 import Link4Controller from './game/controller'
 import Link4Game from './game/model'
-import Link4View from './game/view'
+//import Link4View from './game/view'
+import Link4View from './game/react_view'
+
 
 (function(){
   var hostname = location.protocol + "//" + location.hostname;

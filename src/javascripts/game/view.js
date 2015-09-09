@@ -1,6 +1,6 @@
 export default class Link4View {
  
-  constructor(document, boardSelector, callbacks) {
+  constructor(document, boardSelector) {
     this._document = document;
     this.boardSelector = boardSelector;
   }
