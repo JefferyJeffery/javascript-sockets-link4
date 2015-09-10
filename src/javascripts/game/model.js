@@ -44,7 +44,7 @@ export default class Link4Game {
   }
 
   isActive(){
-    return this.status() != this.STATUS_ACTIVE;
+    return this.status() == this.STATUS_ACTIVE;
   }
 
   isTie(){

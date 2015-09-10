@@ -1,8 +1,7 @@
 .board
-  width: 60%
-  border: 2px solid #333
-  margin: 10px auto
-  padding: 10px
+  width: 80%
+  margin: 0px auto
+  padding: 0px
 
 .grid
   width: 100%  
@@ -19,13 +18,18 @@
 
 .cell
   width: 100%
-  border-radius: 50%
   background-color: #FFF
 
 .cell:before
   content: ""
   display: block
   padding-top: 100%
+
+.dropper
+  border-radius: 0 0 50% 50%
+
+.round
+  border-radius: 50%
   
 .spacer
   width: 15%
@@ -50,7 +54,7 @@
   border-radius: 5px
   margin: 5px auto
   background-color: #FFCC00
-  transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s
 
 .btn:active
   outline: none
@@ -58,10 +62,10 @@
   box-shadow: none
 
 .next_R
-  background-color: #F55
+  background-color: #F88
 
 .next_B
-  background-color: #555
+  background-color: #888
 
 .next_R:hover
   background-color: #F99
@@ -102,7 +106,7 @@
   min-height: 2em
 
 
-$media-queries: "(min-device-width: 320px) and (max-device-width: 736px)"
+$media-queries: "(max-width: 500px)"
 @media only screen and #{$media-queries} 
   .spacer 
      width: 2% 
@@ -111,4 +115,7 @@ $media-queries: "(min-device-width: 320px) and (max-device-width: 736px)"
     border: none
     margin: 0
     padding: 0
+  .btn  
+    height: 1.5em
+    font-size: 0.75em
 
