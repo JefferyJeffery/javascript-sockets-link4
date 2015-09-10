@@ -3,7 +3,7 @@ export default class Link4App {
     this._socket = socket;
     this._game = game;
     this._view = view;
-
+    
     this._game.reset();
 
     this._view.bind({
