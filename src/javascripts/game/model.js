@@ -1,7 +1,17 @@
 export default class Link4Game {
  
-  constructor(force_first) {
-    this.reset(force_first);
+  constructor(options = {}) {
+    this._options = options;
+    if(!this._options['playerNames']){ 
+      this._options['playerNames'] = {};
+      this._options['playerNames'][this.RED] = 'Stu';
+      this._options['playerNames'][this.BLACK] = 'Dana';
+    }
+    this.reset(this._options['force_first']);
+  }
+
+  getPlayerName(key){
+    return this._options['playerNames'][key];
   }
 
   reset(force_first){
@@ -82,8 +92,9 @@ export default class Link4Game {
       start_turn : this._start_turn,
       history : this._history,
       status : this.status(),
+      playerNames : this._options['playerNames']
     }
-    return JSON.stringify(source);
+    return JSON.stringify(source, null, '  ');
   }
 
   getStartingPlayer(){
