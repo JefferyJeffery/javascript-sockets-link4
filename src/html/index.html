@@ -3,7 +3,7 @@
 {% block title %}Game Page{% endblock %}
 
 {% block content %}
-  <script src="/socket.io/socket.io.js"></script>
+  <!--script src="/socket.io/socket.io.js"></script-->
   <div id="board" class="board">
     <table class="status_container">
       <tr>
@@ -28,7 +28,7 @@
           <td></td>
           {% for col in [0,1,2,3,4,5,6] %}
             <td class="cell_holder">
-              <div class="cell" data-column="{{ col }}">
+              <div class="cell round" data-column="{{ col }}">
                 <div class="cell_content"></div>
               </div>
             </td>

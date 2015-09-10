@@ -22,21 +22,21 @@ webpackJsonp([0,1],[
 	
 	var _gameModel2 = _interopRequireDefault(_gameModel);
 	
-	//import Link4View from './game/view'
+	var _gameView = __webpack_require__(4);
 	
-	var _gameReact_view = __webpack_require__(162);
-	
-	var _gameReact_view2 = _interopRequireDefault(_gameReact_view);
+	var _gameView2 = _interopRequireDefault(_gameView);
 	
 	(function () {
-	  var hostname = location.protocol + "//" + location.hostname;
-	  var port = window.location.port ? ':3000' : '';
-	  var socket_host = hostname + port;
+	  // var hostname = location.protocol + "//" + location.hostname;
+	  // var port = window.location.port ? ':3000' : '';
+	  // var socket_host  = hostname + port;
 	
-	  var socket = window.io ? window.io(socket_host) : null;
-	  var app = new _gameController2['default'](socket, new _gameModel2['default'](), new _gameReact_view2['default'](document, 'board'));
+	  // var socket = window.io ? window.io(socket_host) : null;
+	  var socket = null;
 	
-	  console.log('Looking for sockets at ' + socket_host);
+	  var app = new _gameController2['default'](socket, new _gameModel2['default'](), new _gameView2['default'](document, 'board'));
+	
+	  // console.log('Looking for sockets at ' + socket_host);
 	})();
 
 /***/ },
@@ -157,7 +157,7 @@ webpackJsonp([0,1],[
 	  }, {
 	    key: 'isActive',
 	    value: function isActive() {
-	      return this.status() != this.STATUS_ACTIVE;
+	      return this.status() == this.STATUS_ACTIVE;
 	    }
 	  }, {
 	    key: 'isTie',
@@ -396,7 +396,69 @@ webpackJsonp([0,1],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 4 */,
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var _react = __webpack_require__(5);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _react_componentsBoard = __webpack_require__(161);
+	
+	var _react_componentsBoard2 = _interopRequireDefault(_react_componentsBoard);
+	
+	var Link4View = (function () {
+	  function Link4View(document, boardSelector) {
+	    _classCallCheck(this, Link4View);
+	
+	    this._document = document;
+	    this.boardSelector = boardSelector;
+	  }
+	
+	  _createClass(Link4View, [{
+	    key: "render",
+	    value: function render(model) {
+	      this._ensureComponent().setProps({ model: model });
+	    }
+	  }, {
+	    key: "bind",
+	    value: function bind(callbacks) {
+	      this._ensureComponent().setProps({ callbacks: callbacks });
+	    }
+	  }, {
+	    key: "_ensureComponent",
+	    value: function _ensureComponent() {
+	      if (!this._component) {
+	        this._component = _react2["default"].render(_react2["default"].createElement(_react_componentsBoard2["default"]), this._boardDiv());
+	      }
+	      return this._component;
+	    }
+	  }, {
+	    key: "_boardDiv",
+	    value: function _boardDiv() {
+	      return this._document.getElementById(this.boardSelector);
+	    }
+	  }]);
+	
+	  return Link4View;
+	})();
+	
+	exports["default"] = Link4View;
+	module.exports = exports["default"];
+
+/***/ },
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -20772,28 +20834,41 @@ webpackJsonp([0,1],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ },
-/* 161 */,
-/* 162 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	var _react = __webpack_require__(5);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var Board = _react2['default'].createClass({
-	  displayName: 'Board',
+	var _row = __webpack_require__(162);
+	
+	var _row2 = _interopRequireDefault(_row);
+	
+	var _dropper_row = __webpack_require__(164);
+	
+	var _dropper_row2 = _interopRequireDefault(_dropper_row);
+	
+	var _status_bar = __webpack_require__(165);
+	
+	var _status_bar2 = _interopRequireDefault(_status_bar);
+	
+	var _debug_zone = __webpack_require__(167);
+	
+	var _debug_zone2 = _interopRequireDefault(_debug_zone);
+	
+	exports["default"] = _react2["default"].createClass({
+	  displayName: "board",
 	
 	  getDefaultProps: function getDefaultProps() {
 	    return {
@@ -20803,24 +20878,128 @@ webpackJsonp([0,1],[
 	  },
 	
 	  propTypes: {
-	    model: _react2['default'].PropTypes.object,
-	    callbacks: _react2['default'].PropTypes.object.isRequired
+	    model: _react2["default"].PropTypes.object,
+	    callbacks: _react2["default"].PropTypes.object
 	  },
 	
-	  currentPlayerDisplay: function currentPlayerDisplay() {
-	    var status = this.props.model.status();
-	
-	    if (status == this.props.model.STATUS_ACTIVE) {
-	      return 'Next: ' + this.props.model.currentTurn();
-	    } else if (this.props.model.winner()) {
-	      return this.props.model.winner() + ' wins!';
-	    } else {
-	      return 'Tie';
+	  dropCallback: function dropCallback(e) {
+	    e.preventDefault();
+	    e.stopPropagation();
+	    if (this.props.model.isActive()) {
+	      var column_index = parseInt(e.currentTarget.dataset.column);
+	      if (!isNaN(column_index)) {
+	        this.props.callbacks.drop(column_index);
+	      }
 	    }
 	  },
 	
-	  cellStyle: function cellStyle(col, row) {
-	    switch (this.props.model.at(col, row)) {
+	  shared_props: function shared_props() {
+	    var wrapped = this.props;
+	    return wrapped;
+	  },
+	
+	  render: function render() {
+	    if (!this.props.model) {
+	      return _react2["default"].createElement(
+	        "div",
+	        null,
+	        "loading..."
+	      );
+	    }
+	    var shared_props = this.shared_props();
+	
+	    var that = this;
+	    return _react2["default"].createElement(
+	      "div",
+	      { id: "board", className: "board" },
+	      _react2["default"].createElement(_status_bar2["default"], shared_props),
+	      _react2["default"].createElement(
+	        "table",
+	        { className: "grid" },
+	        _react2["default"].createElement(_dropper_row2["default"], _extends({}, shared_props, { dropCallback: that.dropCallback })),
+	        that.props.rows.map(function (row, i) {
+	          return _react2["default"].createElement(_row2["default"], _extends({ key: "board-row-" + row }, shared_props, { row: row, dropCallback: that.dropCallback }));
+	        })
+	      ),
+	      _react2["default"].createElement(_debug_zone2["default"], shared_props)
+	    );
+	  }
+	});
+	module.exports = exports["default"];
+
+/***/ },
+/* 162 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var _react = __webpack_require__(5);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _cell = __webpack_require__(163);
+	
+	var _cell2 = _interopRequireDefault(_cell);
+	
+	exports["default"] = _react2["default"].createClass({
+	  displayName: "row",
+	
+	  propTypes: {
+	    model: _react2["default"].PropTypes.object.isRequired,
+	    columns: _react2["default"].PropTypes.array.isRequired,
+	    row: _react2["default"].PropTypes.number.isRequired,
+	    dropCallback: _react2["default"].PropTypes.func.isRequired
+	  },
+	
+	  render: function render() {
+	    var that = this; // because of the use of map
+	    return _react2["default"].createElement(
+	      "tr",
+	      { className: "board_row", "data-row": this.props.row },
+	      _react2["default"].createElement("td", null),
+	      this.props.columns.map(function (col, i) {
+	        return _react2["default"].createElement(_cell2["default"], { key: "board-cell-" + that.props.row + "-" + col, model: that.props.model, col: col, row: that.props.row, dropCallback: that.props.dropCallback });
+	      }),
+	      _react2["default"].createElement("td", null)
+	    );
+	  }
+	});
+	module.exports = exports["default"];
+
+/***/ },
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(5);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	exports['default'] = _react2['default'].createClass({
+	  displayName: 'cell',
+	
+	  propTypes: {
+	    model: _react2['default'].PropTypes.object.isRequired,
+	    row: _react2['default'].PropTypes.number.isRequired,
+	    col: _react2['default'].PropTypes.number.isRequired,
+	    dropCallback: _react2['default'].PropTypes.func.isRequired
+	  },
+	
+	  cellStyle: function cellStyle() {
+	    switch (this.props.model.at(this.props.col, this.props.row)) {
 	      case this.props.model.RED:
 	        return 'player_R';
 	      case this.props.model.BLACK:
@@ -20830,18 +21009,51 @@ webpackJsonp([0,1],[
 	    }
 	  },
 	
-	  dropperDisabled: function dropperDisabled(col) {
-	    if (this.props.model.status() != this.props.model.STATUS_ACTIVE) {
-	      return true;
-	    } else {
-	      return false;
-	    }
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'td',
+	      { className: 'cell_holder' },
+	      _react2['default'].createElement(
+	        'div',
+	        { className: this.cellStyle() + " round cell", 'data-column': this.props.col, onClick: this.props.dropCallback },
+	        _react2['default'].createElement('div', { className: 'cell_content' })
+	      )
+	    );
+	  }
+	
+	});
+	module.exports = exports['default'];
+
+/***/ },
+/* 164 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(5);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	exports['default'] = _react2['default'].createClass({
+	  displayName: 'dropper_row',
+	
+	  propTypes: {
+	    model: _react2['default'].PropTypes.object.isRequired,
+	    dropCallback: _react2['default'].PropTypes.func.isRequired,
+	    columns: _react2['default'].PropTypes.array.isRequired
 	  },
 	
 	  dropperStyle: function dropperStyle(col) {
-	    if (this.dropperDisabled()) {
+	    if (!this.props.model.isActive()) {
 	      return '';
 	    }
+	
 	    switch (this.props.model.currentTurn()) {
 	      case this.props.model.RED:
 	        return 'next_R';
@@ -20850,148 +21062,185 @@ webpackJsonp([0,1],[
 	    }
 	  },
 	
-	  dropCallback: function dropCallback(e) {
-	    e.preventDefault();
-	    e.stopPropagation();
-	    if (!this.dropperDisabled()) {
-	      var column_index = parseInt(e.target.dataset.column);
-	      if (!isNaN(column_index)) {
-	        this.props.callbacks.drop(column_index);
-	      }
-	    }
-	  },
-	
 	  render: function render() {
-	    console.log(this.props);
-	    if (!this.props.model) {
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        'loading...'
-	      );
-	    }
-	    var that = this;
+	    var that = this; // because of the use of map
 	    return _react2['default'].createElement(
-	      'div',
-	      { id: 'board', className: 'board' },
-	      _react2['default'].createElement(
-	        'table',
-	        { className: 'status_container' },
-	        _react2['default'].createElement(
-	          'tr',
-	          null,
+	      'tr',
+	      null,
+	      _react2['default'].createElement('td', { className: 'spacer' }),
+	      this.props.columns.map(function (col, i) {
+	        return _react2['default'].createElement(
+	          'td',
+	          { key: "dropper-" + col, className: 'board_column cell_holder', 'data-column': col, onClick: that.props.dropCallback },
 	          _react2['default'].createElement(
-	            'td',
-	            { className: 'status_field current_player' },
-	            this.currentPlayerDisplay()
-	          ),
-	          _react2['default'].createElement(
-	            'td',
-	            { className: 'status_field reset_container' },
-	            _react2['default'].createElement(
-	              'button',
-	              { className: 'btn reset', onClick: that.props.callbacks.reset },
-	              'RESET'
-	            )
+	            'div',
+	            { className: that.dropperStyle(col) + " dropper cell" },
+	            _react2['default'].createElement('div', { className: 'cell_content' })
+	          )
+	        );
+	      }),
+	      _react2['default'].createElement('td', { className: 'spacer' })
+	    );
+	  }
+	
+	});
+	module.exports = exports['default'];
+
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var _react = __webpack_require__(5);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _current_player_status = __webpack_require__(166);
+	
+	var _current_player_status2 = _interopRequireDefault(_current_player_status);
+	
+	exports["default"] = _react2["default"].createClass({
+	  displayName: "status_bar",
+	
+	  propTypes: {
+	    model: _react2["default"].PropTypes.object.isRequired,
+	    callbacks: _react2["default"].PropTypes.object.isRequired
+	  },
+	  render: function render() {
+	    return _react2["default"].createElement(
+	      "table",
+	      { className: "status_container" },
+	      _react2["default"].createElement(
+	        "tr",
+	        null,
+	        _react2["default"].createElement(
+	          "td",
+	          { className: "status_field current_player" },
+	          _react2["default"].createElement(_current_player_status2["default"], { model: this.props.model })
+	        ),
+	        _react2["default"].createElement(
+	          "td",
+	          { className: "status_field reset_container" },
+	          _react2["default"].createElement(
+	            "button",
+	            { className: "btn reset", onClick: this.props.callbacks.reset },
+	            "RESET"
 	          )
 	        )
-	      ),
-	      _react2['default'].createElement('div', { className: 'grid_board_spacer' }),
-	      _react2['default'].createElement(
-	        'table',
-	        { className: 'grid' },
-	        _react2['default'].createElement(
-	          'tr',
-	          null,
-	          _react2['default'].createElement('td', { className: 'spacer' }),
-	          that.props.columns.map(function (col, i) {
-	            return _react2['default'].createElement(
-	              'td',
-	              { className: 'board_column' },
-	              _react2['default'].createElement(
-	                'div',
-	                { className: 'dropper square-box', 'data-column': col, onClick: that.dropCallback },
-	                _react2['default'].createElement(
-	                  'div',
-	                  { className: 'square-content' },
-	                  _react2['default'].createElement(
-	                    'div',
-	                    { className: that.dropperStyle(col) },
-	                    _react2['default'].createElement('span', null)
-	                  )
-	                )
-	              )
-	            );
-	          }),
-	          _react2['default'].createElement('td', { className: 'spacer' })
-	        ),
-	        that.props.rows.map(function (row, i) {
-	          return _react2['default'].createElement(
-	            'tr',
-	            { className: 'board_row', 'data-row': row },
-	            _react2['default'].createElement('td', null),
-	            that.props.columns.map(function (col, i) {
-	              return _react2['default'].createElement(
-	                'td',
-	                { className: 'cell_holder' },
-	                _react2['default'].createElement(
-	                  'div',
-	                  { className: that.cellStyle(col, row) + " cell", 'data-column': col },
-	                  _react2['default'].createElement('div', { className: 'cell_content' })
-	                )
-	              );
-	            }),
-	            _react2['default'].createElement('td', null)
-	          );
-	        })
-	      ),
-	      _react2['default'].createElement(
-	        'div',
-	        { className: 'debug' },
-	        this.props.model.serialize()
 	      )
 	    );
 	  }
 	});
+	module.exports = exports["default"];
+
+/***/ },
+/* 166 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 	
-	var Link4View = (function () {
-	  function Link4View(document, boardSelector) {
-	    _classCallCheck(this, Link4View);
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 	
-	    this._document = document;
-	    this.boardSelector = boardSelector;
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(5);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	exports['default'] = _react2['default'].createClass({
+	  displayName: 'current_player_status',
+	
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      playerNames: { 'R': 'Stu', 'B': 'Dana' }
+	    };
+	  },
+	
+	  getPlayerName: function getPlayerName(code) {
+	    var name = this.props.playerNames[code];
+	    return name ? name : code;
+	  },
+	
+	  propTypes: {
+	    model: _react2['default'].PropTypes.object.isRequired,
+	    playerNames: _react2['default'].PropTypes.object.isRequired
+	  },
+	
+	  render: function render() {
+	    if (this.props.model.isActive()) {
+	      return _react2['default'].createElement(
+	        'div',
+	        null,
+	        'Next: ',
+	        _react2['default'].createElement(
+	          'span',
+	          { className: 'player-name' },
+	          this.getPlayerName(this.props.model.currentTurn())
+	        )
+	      );
+	    } else if (this.props.model.isTie()) {
+	      return _react2['default'].createElement(
+	        'div',
+	        null,
+	        'It"s a Draw!'
+	      );
+	    } else {
+	      return _react2['default'].createElement(
+	        'div',
+	        null,
+	        _react2['default'].createElement(
+	          'span',
+	          { className: 'player-name' },
+	          this.getPlayerName(this.props.model.winner())
+	        ),
+	        ' wins!'
+	      );
+	    }
 	  }
-	
-	  _createClass(Link4View, [{
-	    key: 'render',
-	    value: function render(model) {
-	      this._ensureComponent().setProps({ model: model });
-	    }
-	  }, {
-	    key: 'bind',
-	    value: function bind(callbacks) {
-	      this._ensureComponent().setProps({ callbacks: callbacks });
-	    }
-	  }, {
-	    key: '_ensureComponent',
-	    value: function _ensureComponent() {
-	      if (!this._component) {
-	        this._component = _react2['default'].render(_react2['default'].createElement(Board, { view: this }), this._boardDiv());
-	      }
-	      return this._component;
-	    }
-	  }, {
-	    key: '_boardDiv',
-	    value: function _boardDiv() {
-	      return this._document.getElementById(this.boardSelector);
-	    }
-	  }]);
-	
-	  return Link4View;
-	})();
-	
-	exports['default'] = Link4View;
+	});
 	module.exports = exports['default'];
+
+/***/ },
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var _react = __webpack_require__(5);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	exports["default"] = _react2["default"].createClass({
+	  displayName: "debug_zone",
+	
+	  propTypes: {
+	    model: _react2["default"].PropTypes.object.isRequired
+	  },
+	
+	  render: function render() {
+	    return _react2["default"].createElement(
+	      "div",
+	      { className: "debug" },
+	      this.props.model.serialize()
+	    );
+	  }
+	});
+	module.exports = exports["default"];
 
 /***/ }
 ]);
