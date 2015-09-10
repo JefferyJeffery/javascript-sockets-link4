@@ -106,13 +106,26 @@ webpackJsonp([0,1],[
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
 	var Link4Game = (function () {
-	  function Link4Game(force_first) {
+	  function Link4Game() {
+	    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
 	    _classCallCheck(this, Link4Game);
 	
-	    this.reset(force_first);
+	    this._options = options;
+	    if (!this._options['playerNames']) {
+	      this._options['playerNames'] = {};
+	      this._options['playerNames'][this.RED] = 'Stu';
+	      this._options['playerNames'][this.BLACK] = 'Dana';
+	    }
+	    this.reset(this._options['force_first']);
 	  }
 	
 	  _createClass(Link4Game, [{
+	    key: 'getPlayerName',
+	    value: function getPlayerName(key) {
+	      return this._options['playerNames'][key];
+	    }
+	  }, {
 	    key: 'reset',
 	    value: function reset(force_first) {
 	      this._id = this._generateUUID();
@@ -195,9 +208,10 @@ webpackJsonp([0,1],[
 	        id: this._id,
 	        start_turn: this._start_turn,
 	        history: this._history,
-	        status: this.status()
+	        status: this.status(),
+	        playerNames: this._options['playerNames']
 	      };
-	      return JSON.stringify(source);
+	      return JSON.stringify(source, null, '  ');
 	    }
 	  }, {
 	    key: 'getStartingPlayer',
@@ -21144,25 +21158,23 @@ webpackJsonp([0,1],[
 /* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	var _react = __webpack_require__(5);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	exports['default'] = _react2['default'].createClass({
-	  displayName: 'current_player_status',
+	exports["default"] = _react2["default"].createClass({
+	  displayName: "current_player_status",
 	
 	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      playerNames: { 'R': 'Stu', 'B': 'Dana' }
-	    };
+	    return {};
 	  },
 	
 	  getPlayerName: function getPlayerName(code) {
@@ -21171,43 +21183,42 @@ webpackJsonp([0,1],[
 	  },
 	
 	  propTypes: {
-	    model: _react2['default'].PropTypes.object.isRequired,
-	    playerNames: _react2['default'].PropTypes.object.isRequired
+	    model: _react2["default"].PropTypes.object.isRequired
 	  },
 	
 	  render: function render() {
 	    if (this.props.model.isActive()) {
-	      return _react2['default'].createElement(
-	        'div',
+	      return _react2["default"].createElement(
+	        "div",
 	        null,
-	        'Next: ',
-	        _react2['default'].createElement(
-	          'span',
-	          { className: 'player-name' },
-	          this.getPlayerName(this.props.model.currentTurn())
+	        "Next: ",
+	        _react2["default"].createElement(
+	          "span",
+	          { className: "player-name" },
+	          this.props.model.getPlayerName(this.props.model.currentTurn())
 	        )
 	      );
 	    } else if (this.props.model.isTie()) {
-	      return _react2['default'].createElement(
-	        'div',
+	      return _react2["default"].createElement(
+	        "div",
 	        null,
-	        'It"s a Draw!'
+	        "It's a Draw!"
 	      );
 	    } else {
-	      return _react2['default'].createElement(
-	        'div',
+	      return _react2["default"].createElement(
+	        "div",
 	        null,
-	        _react2['default'].createElement(
-	          'span',
-	          { className: 'player-name' },
-	          this.getPlayerName(this.props.model.winner())
+	        _react2["default"].createElement(
+	          "span",
+	          { className: "player-name" },
+	          this.props.model.getPlayerName(this.props.model.winner())
 	        ),
-	        ' wins!'
+	        " wins!"
 	      );
 	    }
 	  }
 	});
-	module.exports = exports['default'];
+	module.exports = exports["default"];
 
 /***/ },
 /* 167 */

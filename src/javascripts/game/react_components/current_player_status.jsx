@@ -3,9 +3,7 @@ import React from "react";
 export default React.createClass({
 
   getDefaultProps: function() {
-    return {
-      playerNames: {'R': 'Stu', 'B': 'Dana'}
-    };
+    return {};
   },
 
   getPlayerName: function(code){
@@ -14,8 +12,7 @@ export default React.createClass({
   },
 
   propTypes:{
-    model: React.PropTypes.object.isRequired,
-    playerNames: React.PropTypes.object.isRequired
+    model: React.PropTypes.object.isRequired
   },
 
   render: function(){
@@ -23,17 +20,17 @@ export default React.createClass({
       return(
         <div>
           Next:&nbsp;
-          <span className="player-name">{ this.getPlayerName(this.props.model.currentTurn()) }</span>
+          <span className="player-name">{ this.props.model.getPlayerName(this.props.model.currentTurn()) }</span>
         </div>
       );
     } else if (this.props.model.isTie()){
       return(
-        <div>It&quot;s a Draw!</div>
+        <div>It's a Draw!</div>
       );
     } else {
       return(
         <div>
-          <span className="player-name">{ this.getPlayerName(this.props.model.winner()) }</span>
+          <span className="player-name">{ this.props.model.getPlayerName(this.props.model.winner()) }</span>
           &nbsp;wins!
         </div>
       );

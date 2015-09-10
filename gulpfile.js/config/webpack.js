@@ -14,14 +14,14 @@ module.exports = function(env) {
     plugins: [],
 
     resolve: {
-      extensions: ['', '.js']
+      extensions: ['', '.js','.jsx']
     },
 
     module: {
       loaders: [
         {
-          test: /\.js$/,
-          loader: 'babel-loader?stage=1',
+          test: /\.jsx?$/,
+          loader: 'babel-loader?stage=4',
           exclude: /node_modules/
         }
       ]
