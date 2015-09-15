@@ -23,6 +23,7 @@
     "test": "gulp build:production && karma start --single-run"
   },
   "dependencies": {
+    "ejs": "^2.3.4",
     "express": "^4.13.3",
     "gulp-nodemon": "^2.0.4",
     "react": "^0.13.3",

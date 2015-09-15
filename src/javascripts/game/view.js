@@ -1,5 +1,6 @@
 import React from "react";
 import Board from "./react_components/board"
+import SetupForm from "./react_components/setup_form"
 
 export default class Link4View {
  

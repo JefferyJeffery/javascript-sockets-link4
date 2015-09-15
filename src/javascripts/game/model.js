@@ -2,11 +2,15 @@ export default class Link4Game {
  
   constructor(options = {}) {
     this._options = options;
+
     if(!this._options['playerNames']){ 
       this._options['playerNames'] = {};
       this._options['playerNames'][this.RED] = 'Stu';
       this._options['playerNames'][this.BLACK] = 'Dana';
     }
+    
+    this._id = this._options['id'] || this._generateUUID();
+
     this.reset(this._options['force_first']);
   }
 
@@ -14,8 +18,7 @@ export default class Link4Game {
     return this._options['playerNames'][key];
   }
 
-  reset(force_first){
-    this._id = this._generateUUID();
+  reset(force_first, history){
     this._columns = [];
     this._history = [];
     for (var i =0; i < this.COLUMN_COUNT; i++) {
@@ -27,6 +30,9 @@ export default class Link4Game {
       this._randomizeTurn();
     }
     this._start_turn = this.currentTurn();
+    if(history){
+      this._rerunHistory(history);
+    }
   }
 
   drop(column_index){
@@ -78,6 +84,10 @@ export default class Link4Game {
     return this._turn;
   }
 
+  id(){
+    return this._id;
+  }
+
   at(column_index, row_index){
     var column = this._column(column_index);
     if(row_index < column.length){
@@ -95,6 +105,25 @@ export default class Link4Game {
       playerNames : this._options['playerNames']
     }
     return JSON.stringify(source, null, '  ');
+  }
+
+  undoLastMove(){
+    if(this._history.length > 0){
+      this._history.pop();
+      this.reset(this._start_turn, this._history);
+    }
+  }
+
+  restore(state){
+    this._id = state.id;
+    this._options = {playerNames:  state.playerNames};
+    this.reset(state.start_turn, state.history);
+  }
+
+  _rerunHistory(history){
+    history.map(function(column, i){
+      this.drop(column);
+    }.bind(this));
   }
 
   getStartingPlayer(){

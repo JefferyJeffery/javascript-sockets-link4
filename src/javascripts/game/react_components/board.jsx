@@ -44,7 +44,7 @@ export default React.createClass({
 
     var that = this;
     return (
-      <div id="board" className="board">
+      <div className="board">
         <StatusBar {...shared_props}/>
         <table className="grid">
           <DropperRow {...shared_props} dropCallback={that.dropCallback}/>

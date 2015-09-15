@@ -27,31 +27,30 @@ webpackJsonp([0,1],[
 	var _gameView2 = _interopRequireDefault(_gameView);
 	
 	(function () {
-	  // var hostname = location.protocol + "//" + location.hostname;
-	  // var port = window.location.port ? ':3000' : '';
-	  // var socket_host  = hostname + port;
+	  var hostname = location.protocol + "//" + location.hostname;
+	  var port = window.location.port ? ':3000' : '';
+	  var socket_host = hostname + port;
 	
-	  // var socket = window.io ? window.io(socket_host) : null;
-	  var socket = null;
+	  var socket = window.io ? window.io(socket_host) : null;
 	
-	  var app = new _gameController2['default'](socket, new _gameModel2['default'](), new _gameView2['default'](document, 'board'));
+	  var gameId = document.getElementById('board').dataset['gameId'];
 	
-	  // console.log('Looking for sockets at ' + socket_host);
+	  var app = new _gameController2['default'](socket, new _gameModel2['default']({ id: gameId }), new _gameView2['default'](document, 'board'));
 	})();
 
 /***/ },
 /* 2 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
-	Object.defineProperty(exports, "__esModule", {
+	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
 	var Link4App = (function () {
 	  function Link4App(socket, game, view) {
@@ -61,26 +60,58 @@ webpackJsonp([0,1],[
 	    this._game = game;
 	    this._view = view;
 	
+	    if (this._socket) {
+	      this._socket.on(this._game.id(), (function () {
+	        var state = arguments[arguments.length - 1];
+	        console.log(state);
+	        this.load(JSON.parse(state));
+	      }).bind(this));
+	    }
+	
 	    this._game.reset();
 	
 	    this._view.bind({
 	      drop: this.drop.bind(this),
-	      reset: this.reset.bind(this)
+	      reset: this.reset.bind(this),
+	      undo: this.undo.bind(this)
 	    });
 	
 	    this._view.render(this._game);
 	  }
 	
 	  _createClass(Link4App, [{
-	    key: "drop",
-	    value: function drop(column) {
-	      this._game.drop(column);
+	    key: 'save',
+	    value: function save() {
+	      if (this._socket) {
+	        this._socket.emit('save link4', this._game.serialize());
+	        console.log(this._game.serialize());
+	      }
+	    }
+	  }, {
+	    key: 'load',
+	    value: function load(saved_game) {
+	      this._game.restore(saved_game);
 	      this._view.render(this._game);
 	    }
 	  }, {
-	    key: "reset",
+	    key: 'drop',
+	    value: function drop(column) {
+	      this._game.drop(column);
+	      this.save();
+	      this._view.render(this._game);
+	    }
+	  }, {
+	    key: 'reset',
 	    value: function reset() {
 	      this._game.reset();
+	      this.save();
+	      this._view.render(this._game);
+	    }
+	  }, {
+	    key: 'undo',
+	    value: function undo() {
+	      this._game.undoLastMove();
+	      this.save();
 	      this._view.render(this._game);
 	    }
 	  }]);
@@ -88,8 +119,8 @@ webpackJsonp([0,1],[
 	  return Link4App;
 	})();
 	
-	exports["default"] = Link4App;
-	module.exports = exports["default"];
+	exports['default'] = Link4App;
+	module.exports = exports['default'];
 
 /***/ },
 /* 3 */
@@ -112,11 +143,15 @@ webpackJsonp([0,1],[
 	    _classCallCheck(this, Link4Game);
 	
 	    this._options = options;
+	
 	    if (!this._options['playerNames']) {
 	      this._options['playerNames'] = {};
 	      this._options['playerNames'][this.RED] = 'Stu';
 	      this._options['playerNames'][this.BLACK] = 'Dana';
 	    }
+	
+	    this._id = this._options['id'] || this._generateUUID();
+	
 	    this.reset(this._options['force_first']);
 	  }
 	
@@ -127,8 +162,7 @@ webpackJsonp([0,1],[
 	    }
 	  }, {
 	    key: 'reset',
-	    value: function reset(force_first) {
-	      this._id = this._generateUUID();
+	    value: function reset(force_first, history) {
 	      this._columns = [];
 	      this._history = [];
 	      for (var i = 0; i < this.COLUMN_COUNT; i++) {
@@ -140,6 +174,9 @@ webpackJsonp([0,1],[
 	        this._randomizeTurn();
 	      }
 	      this._start_turn = this.currentTurn();
+	      if (history) {
+	        this._rerunHistory(history);
+	      }
 	    }
 	  }, {
 	    key: 'drop',
@@ -193,6 +230,11 @@ webpackJsonp([0,1],[
 	      return this._turn;
 	    }
 	  }, {
+	    key: 'id',
+	    value: function id() {
+	      return this._id;
+	    }
+	  }, {
 	    key: 'at',
 	    value: function at(column_index, row_index) {
 	      var column = this._column(column_index);
@@ -212,6 +254,28 @@ webpackJsonp([0,1],[
 	        playerNames: this._options['playerNames']
 	      };
 	      return JSON.stringify(source, null, '  ');
+	    }
+	  }, {
+	    key: 'undoLastMove',
+	    value: function undoLastMove() {
+	      if (this._history.length > 0) {
+	        this._history.pop();
+	        this.reset(this._start_turn, this._history);
+	      }
+	    }
+	  }, {
+	    key: 'restore',
+	    value: function restore(state) {
+	      this._id = state.id;
+	      this._options = { playerNames: state.playerNames };
+	      this.reset(state.start_turn, state.history);
+	    }
+	  }, {
+	    key: '_rerunHistory',
+	    value: function _rerunHistory(history) {
+	      history.map((function (column, i) {
+	        this.drop(column);
+	      }).bind(this));
 	    }
 	  }, {
 	    key: 'getStartingPlayer',
@@ -432,6 +496,10 @@ webpackJsonp([0,1],[
 	var _react_componentsBoard = __webpack_require__(161);
 	
 	var _react_componentsBoard2 = _interopRequireDefault(_react_componentsBoard);
+	
+	var _react_componentsSetup_form = __webpack_require__(168);
+	
+	var _react_componentsSetup_form2 = _interopRequireDefault(_react_componentsSetup_form);
 	
 	var Link4View = (function () {
 	  function Link4View(document, boardSelector) {
@@ -20925,7 +20993,7 @@ webpackJsonp([0,1],[
 	    var that = this;
 	    return _react2["default"].createElement(
 	      "div",
-	      { id: "board", className: "board" },
+	      { className: "board" },
 	      _react2["default"].createElement(_status_bar2["default"], shared_props),
 	      _react2["default"].createElement(
 	        "table",
@@ -21141,7 +21209,12 @@ webpackJsonp([0,1],[
 	        ),
 	        _react2["default"].createElement(
 	          "td",
-	          { className: "status_field reset_container" },
+	          { className: "status_field button_container" },
+	          _react2["default"].createElement(
+	            "button",
+	            { className: "btn undo", onClick: this.props.callbacks.undo },
+	            "UNDO"
+	          ),
 	          _react2["default"].createElement(
 	            "button",
 	            { className: "btn reset", onClick: this.props.callbacks.reset },
@@ -21252,6 +21325,72 @@ webpackJsonp([0,1],[
 	  }
 	});
 	module.exports = exports["default"];
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(5);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	exports['default'] = _react2['default'].createClass({
+	  displayName: 'setup_form',
+	
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      playerNames: ['Stu', 'Dana']
+	    };
+	  },
+	
+	  propTypes: {
+	    playerNames: _react2['default'].PropTypes.array
+	  },
+	
+	  getInitialState: function getInitialState() {
+	    return {
+	      namePlayerR: this.props.playerNames[0],
+	      namePlayerB: this.props.playerNames[1]
+	    };
+	  },
+	
+	  handleInputChange: function handleInputChange(field, e) {
+	    var state = {};
+	    state[field] = e.target.value;
+	    this.setState(state);
+	    console.log(this.state);
+	  },
+	
+	  startCallback: function startCallback(e) {
+	    e.preventDefault();
+	    console.log(e);
+	    console.log(this.state);
+	  },
+	
+	  render: function render() {
+	    var that = this;
+	    return _react2['default'].createElement(
+	      'div',
+	      { className: 'setup_form' },
+	      _react2['default'].createElement(
+	        'form',
+	        null,
+	        _react2['default'].createElement('input', { type: 'text', id: 'namePlayerR', value: this.state.namePlayerR, placeholder: 'Red Player', onChange: this.handleInputChange.bind(this, 'namePlayerR') }),
+	        _react2['default'].createElement('input', { type: 'text', id: 'namePlayerB', value: this.state.namePlayerB, placeholder: 'Black Player', onChange: this.handleInputChange.bind(this, 'namePlayerB') }),
+	        _react2['default'].createElement('input', { type: 'submit', onClick: this.startCallback, value: 'Start New Game' })
+	      )
+	    );
+	  }
+	});
+	module.exports = exports['default'];
 
 /***/ }
 ]);

@@ -11,7 +11,10 @@ export default React.createClass({
       <table className="status_container">
         <tr>
           <td className="status_field current_player"><CurrentPlayerStatus model={this.props.model}/></td>
-          <td className="status_field reset_container"><button className="btn reset" onClick={this.props.callbacks.reset}>RESET</button></td>
+          <td className="status_field button_container">
+            <button className="btn undo" onClick={this.props.callbacks.undo}>UNDO</button>
+            <button className="btn reset" onClick={this.props.callbacks.reset}>RESET</button>
+          </td>
         </tr>
       </table>
     );
