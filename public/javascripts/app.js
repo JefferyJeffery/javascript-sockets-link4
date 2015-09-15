@@ -30,8 +30,22 @@ webpackJsonp([0,1],[
 	  var hostname = location.protocol + "//" + location.hostname;
 	  var port = window.location.port ? ':3000' : '';
 	  var socket_host = hostname + port;
+	  var max_socket_reconnects = 10;
 	
-	  var socket = window.io ? window.io(socket_host) : null;
+	  var socket = window.io ? window.io(socket_host, {
+	    'max reconnection attempts': max_socket_reconnects
+	  }) : null;
+	
+	  if (socket) {
+	    socket.on("reconnecting", function (delay, attempt) {
+	      if (attempt === max_socket_reconnects) {
+	        setTimeout(function () {
+	          socket.socket.reconnect();
+	        }, 5000);
+	        return console.log("Failed to reconnect. Lets try that again in 5 seconds.");
+	      }
+	    });
+	  }
 	
 	  var gameId = document.getElementById('board').dataset['gameId'];
 	
@@ -61,19 +75,9 @@ webpackJsonp([0,1],[
 	    this._view = view;
 	
 	    if (this._socket) {
-	      this._socket.emit('connect link4', JSON.stringify({ id: this._game.id(), connect: true }));
-	
-	      console.log(this._game.serialize());
-	
-	      this._socket.on(this._game.id(), (function () {
-	        var state = JSON.parse(arguments[arguments.length - 1]);
-	        console.log(state);
-	        if (state.connect) {
-	          this.save();
-	        } else if (state.id) {
-	          this.load(state);
-	        }
-	      }).bind(this));
+	      this.requestGame();
+	      this._socket.on('reconnect', this.requestGame.bind(this));
+	      this._socket.on(this._game.id(), this.handleGameMessage.bind(this));
 	    }
 	
 	    this._game.reset();
@@ -88,12 +92,42 @@ webpackJsonp([0,1],[
 	  }
 	
 	  _createClass(Link4App, [{
-	    key: 'save',
-	    value: function save() {
+	    key: 'handleGameMessage',
+	    value: function handleGameMessage() {
+	      var state = JSON.parse(arguments[arguments.length - 1]);
+	      console.log(state);
+	      if (state.connect) {
+	        this.broadcaseGame();
+	      } else if (state.id) {
+	        this.receiveGame(state);
+	      }
+	    }
+	  }, {
+	    key: 'requestGame',
+	    value: function requestGame() {
+	      if (this._socket) {
+	        this._socket.emit('connect link4', JSON.stringify({ id: this._game.id(), connect: true }));
+	      }
+	    }
+	  }, {
+	    key: 'broadcaseGame',
+	    value: function broadcaseGame() {
+	      console.log("BROADCASTING GAME", this._game.id());
 	      if (this._socket) {
 	        this._socket.emit('save link4', this._game.serialize());
 	        console.log(this._game.serialize());
 	      }
+	    }
+	  }, {
+	    key: 'receiveGame',
+	    value: function receiveGame(state) {
+	      console.log("RECEIVING GAME", this._game.id());
+	      this.load(state);
+	    }
+	  }, {
+	    key: 'save',
+	    value: function save() {
+	      this.broadcaseGame();
 	    }
 	  }, {
 	    key: 'load',
@@ -21161,10 +21195,10 @@ webpackJsonp([0,1],[
 	      this.props.columns.map(function (col, i) {
 	        return _react2['default'].createElement(
 	          'td',
-	          { key: "dropper-" + col, className: 'board_column cell_holder', 'data-column': col, onClick: that.props.dropCallback },
+	          { key: "dropper-" + col, className: 'board_column cell_holder' },
 	          _react2['default'].createElement(
 	            'div',
-	            { className: that.dropperStyle(col) + " dropper cell" },
+	            { className: that.dropperStyle(col) + " dropper cell", 'data-column': col, onClick: that.props.dropCallback },
 	            _react2['default'].createElement('div', { className: 'cell_content' })
 	          )
 	        );

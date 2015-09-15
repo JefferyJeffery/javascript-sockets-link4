@@ -27,8 +27,8 @@ export default React.createClass({
         <td className="spacer"></td>
         {this.props.columns.map(function(col, i) {
           return (
-            <td key={"dropper-" + col} className="board_column cell_holder" data-column={col} onClick={ that.props.dropCallback }>
-              <div className={that.dropperStyle(col) + " dropper cell"}>
+            <td key={"dropper-" + col} className="board_column cell_holder">
+              <div className={that.dropperStyle(col) + " dropper cell"} data-column={col} onClick={ that.props.dropCallback }>
                 <div className="cell_content"></div>
               </div>
             </td>
