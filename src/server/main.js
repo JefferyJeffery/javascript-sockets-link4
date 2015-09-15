@@ -33,6 +33,12 @@ io.on('connection', function(socket){
     console.log('save game: ' + game.id);
     socket.broadcast.emit(game.id, payload);
   });
+  socket.on('connect link4', function(payload){
+    var game = JSON.parse(payload);
+    console.log(payload);
+    console.log('connect game: ' + game.id);
+    socket.broadcast.emit(game.id, payload);
+  });
 });
 
 

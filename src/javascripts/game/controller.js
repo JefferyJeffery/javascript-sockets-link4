@@ -5,10 +5,18 @@ export default class Link4App {
     this._view = view;
 
     if(this._socket){
+      this._socket.emit('connect link4', JSON.stringify({id: this._game.id(), connect: true}));
+
+      console.log(this._game.serialize());
+
        this._socket.on(this._game.id(), function(){
-         var state = arguments[arguments.length - 1];
+         var state = JSON.parse(arguments[arguments.length - 1]);
          console.log(state);
-         this.load(JSON.parse(state))
+         if(state.connect){
+           this.save();
+         } else if(state.id){
+           this.load(state);
+         }
        }.bind(this));
     }
     
